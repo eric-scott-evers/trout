@@ -3,7 +3,7 @@
 
 
 start() -> 
-        Chain = [[a,f,b], [b,g,c], [c,h,d]],
+        Chain     = [[a,f,b], [b,g,c], [c,h,d]],
 	Type_Info = lookup_type_info(Chain, ""),
 	Char_1    = atom_to_list( hd( hd( Chain))),
 	Output    = build_category(Chain, Char_1),
@@ -21,16 +21,16 @@ lookup_type_info([Item|T], Output) ->
 
 build_category([], Output) -> Output;
 build_category([Item|List], Output) ->
-	A = hd(Item),
-        B = hd(tl(Item)),
-        C = hd(tl(tl(Item))),
+	A  = hd(Item),
+        B  = hd(tl(Item)),
+        C  = hd(tl(tl(Item))),
         AA = atom_to_list(A),
         BB = atom_to_list(B),
         CC = atom_to_list(C),
         Arrow_start  = " --",
         Arrow_end    = "--> ",
-	Build = AA ++ Arrow_start ++ BB ++ Arrow_end ++ CC,
-	Trim_Output = lists:reverse(tl(lists:reverse(Output))),
+	Build        = AA ++ Arrow_start ++ BB ++ Arrow_end ++ CC,
+	Trim_Output  = lists:reverse(tl(lists:reverse(Output))),
 	build_category(List, Trim_Output ++ Build).
 
 f(fin)   -> float;
