@@ -48,6 +48,8 @@ And we can generate some simple category diagrams for our functions.
     a -----> b -----> c -----> d
         f        g        h
 
+----------------------------------------------------
+
 Idea, we could make the type returned more detailed. 
 
 y(fin) -> 
@@ -64,7 +66,7 @@ Or return a function that acts as the guard to the function.
 
 Guard_in = [is_float, {gt, 500}, {lt, 1500}]. 
 
-Then the input type is build from a composition of smaller building block functions in order. 
+Then the input type is built from a composition of smaller building block functions in order. 
 
 Type_in = Guard_in. 
 
