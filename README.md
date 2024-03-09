@@ -5,7 +5,7 @@ An experiment with category theory, types, contracts and erlang.
 trout : type reflection of output 
 
 Let f be a function.
-We let function tell us what type it accecpts.
+We let the function tell us what type it accecpts.
 
 f(fin) -> float;
 
@@ -53,19 +53,21 @@ And we can generate some simple category diagrams for our functions.
 
 ----------------------------------------------------
 
-Idea, we could make the type returned more detailed. 
+Idea: we could make the returned type more detailed. 
 
 y(fin) -> 
   {float, {inf, 500}, {sup, 1500}};
 
-So the input domain is an float strictly between the values of 500 and 1500, exclusive. The dark ages. 
+So the input domain is an float strictly between the values of 500 and 1500, exclusive. The middle ages. 
 
 x(fin) ->
   {float, {max, 500}, {min, 1500}};
   
-So the input domain is an float between the values of 500 and 1500 inclusive. Still the dark ages. 
+So the input domain is an float between the values of 500 and 1500 inclusive. Still the middle ages. 
 
 Or return a function that acts as the guard to the function. 
+
+Guard_in = [is_float, {ge, 500}, {le, 1500}]. 
 
 Guard_in = [is_float, {gt, 500}, {lt, 1500}]. 
 
