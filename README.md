@@ -6,7 +6,7 @@ We let function tell us what type it accecpts.
 
 f(fin) -> float;
 
-And what type it return.
+And what type it returns.
 
 f(trout) -> int;
 
