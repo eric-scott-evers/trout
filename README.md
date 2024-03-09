@@ -1,5 +1,8 @@
 # trout
+
 An experiment with category theory, types, contracts and erlang.
+
+trout : type reflection of output 
 
 Let f be a function.
 We let function tell us what type it accecpts.
