@@ -1,14 +1,13 @@
 
 $ erl
 
-c(comp).
+1> c(comp).
 comp.erl:4:2: Warning: export_all flag enabled - all functions will be exported
 %    4| -compile(export_all).
 %     |  ^
 
 {ok,comp}
-2> comp 
-2> :start().
+2> comp:start().
 
  input type of f is float, input type of g is int, input type of h is nat 
  "a --f--> b --g--> c --h--> d"
