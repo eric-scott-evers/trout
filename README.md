@@ -86,9 +86,9 @@ Of course we can have a Guard_out also.
 
 The Guard_in and Guard_out together become a contract for the function.
 
-If the Guard_in for g matches the Guard_out for g, then they compose and communte.
+If the Guard_in for g matches the Guard_out for f, then they compose and communte.
 
-
+g(f(A))
 
 
 
