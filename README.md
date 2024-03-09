@@ -82,6 +82,12 @@ So we return the list of building blocks as a complex type.
 
 w(fin) -> Guard_in =  [is_float, {gt, 500}, {lt, 1500}]. 
 
+Of course we can have a Guard_out also. 
+
+The Guard_in and Guard_out together become a contract for the function.
+
+If the Guard_in for g matches the Guard_out for g, then they compose and communte.
+
 
 
 
