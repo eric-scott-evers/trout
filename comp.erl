@@ -1,7 +1,7 @@
 -module(comp).
 -compile(export_all).
 
-% Experiment with types reflection at runtime in erlang
+% Experiment with type reflection at runtime in erlang, category diagrams, and contracts. 
 %   Run with comp:start().
 %     1) reflects input types of functions
 %     2) generates simple category diagram for f, g and h 
