@@ -4,7 +4,6 @@ An experiment with category theory, types, contracts and erlang.
 Let f be a function.
 We let function tell us what type it accecpts.
 
-*code*
 f(fin) -> float;
 
 And what type it return.
