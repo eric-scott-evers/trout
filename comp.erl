@@ -1,6 +1,10 @@
 -module(comp).
 -compile(export_all).
 
+% Experiment with types reflection at runtime in erlang
+%   Run with comp:start().
+%     1) reflects input types of functions
+%     2) generates simple category diagram for f, g and h 
 
 start() -> 
         Chain     = [[a,f,b], [b,g,c], [c,h,d]],
