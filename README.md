@@ -49,8 +49,7 @@ If is_float(Arg) == true.
 And we can generate some simple category diagrams for our functions. 
 
 
-`    a -----> b -----> c -----> d` \
-`         f        g        h     `
+`    a --f--> b --g--> c --h--> d  ` 
 
 ----------------------------------------------------
 
