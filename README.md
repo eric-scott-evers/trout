@@ -107,19 +107,24 @@ Build a function or build the output.
 First is a sketch of how to build the output:
 
 <code>
-execute_guard(Chain, Arg_in) -> execute(Chain, Arg_in, true).   % execute_guard/2 
-</code>  
-<code>
 execute_guard([], Arg_in, Output) -> Output;                    % execute_guard/3
 execute_guard([H|Chain], Arg) ->  
-  Arg_Out = apply(?MODULE, H, Arg) and Output, 
+  Arg_Out = execute_a_guard(H, Arg) and Output, 
   execute_guard(Chain, Arg_in, Output). 
+
+% special cases
+execute_a_guard({gt, Num}, Arg) -> Arg > Num;
+execute_a_guard({lt, Num}, Arg) -> Arg < Num;
+% default case, is_int etc.  
+execute_a_guard(Function, Arg) ->
+  apply(?MODULE, Function, [Arg]).
+  
 </code>
 
 call it with:
 
 <code>
-
-Result = execute_guard( Guard_in, Arg_in).
-
+Result = execute_guard( Guard_in, Arg_in, true).
 </code>
+
+Guard_In
