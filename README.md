@@ -102,13 +102,19 @@ So contract is three part. Type_in, Type_out, and additional contraints of proce
 Type_contract is minimal contrant on only the types in and out. 
 Type_contract = Guard_in(Arg_in) and Gurad_out(Arg_out).
 
-How do we execute a Guard? Simple. 
+How do we execute a Guard? There are two ways to do it. 
+Build a function or build the output. 
+First is a sketch of how to build the output:
 
-execute_guard([], Output) -> Output.
-execute_guard([H|Chain]) ->
-  
+`
+execute_guard(Chain, Arg_in) -> execute(Chain, Arg_in, true).   % execute_guard/2 
 
+execute_guard([], Arg_in, Output) -> Output;                    % executee_guard/3
+execute_guard([H|Chain], Arg) ->  
+  Arg_Out = apply(?MODULE, H, Arg) and Output, 
+  execute_guard(Chain, Arg_in, Output). 
 
+call it with:
 
-
-
+Result = execute_guard( Guard_in, Arg_in).
+`
