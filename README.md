@@ -106,15 +106,15 @@ How do we execute a Guard? There are two ways to do it.
 Build a function or build the output. 
 First is a sketch of how to build the output:
 
-`
-execute_guard(Chain, Arg_in) -> execute(Chain, Arg_in, true).   % execute_guard/2 
 
-execute_guard([], Arg_in, Output) -> Output;                    % executee_guard/3
-execute_guard([H|Chain], Arg) ->  
+`execute_guard(Chain, Arg_in) -> execute(Chain, Arg_in, true).   % execute_guard/2 `
+
+`execute_guard([], Arg_in, Output) -> Output;                    % executee_guard/3`
+`execute_guard([H|Chain], Arg) ->  
   Arg_Out = apply(?MODULE, H, Arg) and Output, 
   execute_guard(Chain, Arg_in, Output). 
 
 call it with:
 
-Result = execute_guard( Guard_in, Arg_in).
-`
+Result = execute_guard( Guard_in, Arg_in).`
+
