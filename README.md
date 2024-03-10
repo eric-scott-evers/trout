@@ -1,45 +1,45 @@
 # trout
 
 An experiment with category theory, types, contracts and erlang.
-
-trout : type reflection of output 
+Why the name trout?
+trout : type reflection of output (and input) 
 
 Let f be a function.
-We let the function tell us what type it accecpts.
+We let the function, f tell us what type it accecpts.
 
-f(fin) -> float;
+`f(fin) -> float;`
 
 And what type it returns.
 
-f(trout) -> int;
+`f(trout) -> int;`
 
 Then we define the function.
 
-f(Arg) -> floor(Arg).
+`f(Arg) -> floor(Arg).`
 
 we can ask it its inputs and output type.
 
-f(fin).
-
->  float
+`f(fin).
+>  float`
 
 output type
-  
->  int
+
+`f(trout).  
+>  int`
 
 We do the same with function g.
 
-g(fin) -> int;
+`g(fin) -> int;`
 
 Now if we try to compose f and g.
 
-Arg = -4.5.
-g(f(Arg)).
+`Arg = -4.5.
+g(f(Arg)).`
 
 We can check the input and output type at runtime. 
 
-f(trout) == f(fin).
->  true
+`f(trout) == f(fin).
+>  true`
 
 Nice. 
 
@@ -48,9 +48,10 @@ We know the composition should work before we run it.
 If is_float(Arg) == true.
 And we can generate some simple category diagrams for our functions. 
 
+`
     a -----> b -----> c -----> d
         f        g        h
-
+`
 ----------------------------------------------------
 
 Idea: we could make the returned type more detailed. 
