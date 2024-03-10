@@ -20,12 +20,12 @@ Then we define the function.
 we can ask it its inputs and output type.
 
 `f(fin).
->  float`
+    float`
 
 output type
 
 `f(trout).  
->  int`
+    int`
 
 We do the same with function g.
 
