@@ -19,13 +19,13 @@ Then we define the function.
 
 we can ask it its inputs and output type.
 
-`f(fin).
-    float`
+`f(fin).`
+`   float`
 
 output type
 
-`f(trout).  
-    int`
+`f(trout).`  
+`   int`
 
 We do the same with function g.
 
@@ -48,10 +48,10 @@ We know the composition should work before we run it.
 If is_float(Arg) == true.
 And we can generate some simple category diagrams for our functions. 
 
-`
-    a -----> b -----> c -----> d
-        f        g        h
-`
+
+`    a -----> b -----> c -----> d`
+`        f        g        h     `
+
 ----------------------------------------------------
 
 Idea: we could make the returned type more detailed. 
