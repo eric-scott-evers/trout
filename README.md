@@ -38,8 +38,8 @@ g(f(Arg)).`
 
 We can check the input and output type at runtime. 
 
-`f(trout) == f(fin).
->  true`
+`f(trout) == f(fin).`
+`  true`
 
 Nice. 
 
@@ -49,7 +49,7 @@ If is_float(Arg) == true.
 And we can generate some simple category diagrams for our functions. 
 
 
-`    a -----> b -----> c -----> d`
+`    a -----> b -----> c -----> d` \
 `        f        g        h     `
 
 ----------------------------------------------------
