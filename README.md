@@ -50,7 +50,7 @@ And we can generate some simple category diagrams for our functions.
 
 
 `    a -----> b -----> c -----> d` \
-`        f        g        h     `
+`         f        g        h     `
 
 ----------------------------------------------------
 
