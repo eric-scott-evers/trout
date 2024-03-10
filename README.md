@@ -95,6 +95,18 @@ If the Guard_in for g matches the Guard_out for f, then they compose and communt
 
 g(f(A))
 
+A type contract on a function satisfies both input and output types.
+
+Contract = Guard_in(Arg_in) and Guard_process(Arg_out) and Guard_out(Arg_out).
+So contract is three part. Type_in, Type_out, and additional contraints of process guard. 
+Type_contract is minimal contrant on only the types in and out. 
+Type_contract = Guard_in(Arg_in) and Gurad_out(Arg_out).
+
+How do we execute a Guard? Simple. 
+
+execute_guard([], Output) -> Output.
+execute_guard([H|Chain]) ->
+  
 
 
 
