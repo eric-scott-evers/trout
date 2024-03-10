@@ -110,12 +110,15 @@ First is a sketch of how to build the output:
 execute_guard(Chain, Arg_in) -> execute(Chain, Arg_in, true).   % execute_guard/2 
 </code>  
 <code>
-execute_guard([], Arg_in, Output) -> Output;                    % executee_guard/3
+execute_guard([], Arg_in, Output) -> Output;                    % execute_guard/3
 execute_guard([H|Chain], Arg) ->  
   Arg_Out = apply(?MODULE, H, Arg) and Output, 
   execute_guard(Chain, Arg_in, Output). 
+</code>
 
 call it with:
+
+<code>
 
 Result = execute_guard( Guard_in, Arg_in).
 
