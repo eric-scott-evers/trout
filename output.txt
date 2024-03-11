@@ -8,9 +8,11 @@ comp.erl:4:2: Warning: export_all flag enabled - all functions will be exported
 
 {ok,comp}
 2> comp:start().
-
   // input type of f is float // input type of g is int // input type of h is nat 
   // output type of f is int // output type of g is nat // output type of h is bool 
  
+  input type [is_integer,{gt,500},{lt,1500}] of p is ok: true 
+  output type [is_integer,{gt,1065},{lt,1067}] of p is ok: true 
  "a --f--> b --g--> c --h--> d"
+
 
