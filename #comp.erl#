@@ -6,9 +6,6 @@
 %   Run with comp:start().
 %     1) reflects input and output types of functions
 %     2) generates simple category diagram for f, g and h 
-%        {nat => nat}
-%        Data.Maybe.mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-%        
 
 start() -> 
         Chain = [[a,f,b], [b,g,c], [c,h,d]],
@@ -18,7 +15,7 @@ start() ->
        
         % Type_guard 
 	Guard_in    = [is_integer, { gt, 500}, { lt, 1500}],
-        Guard_out   = [is_nat, { gt, 1065}, { lt, 1067}],
+        Guard_out   = [is_integer, { gt, 1065}, { lt, 1067}],
 	Arg_in      = 1000,
         Arg_out     = 1066,
         Input_type_is_ok = execute_guard(  Guard_in,  Arg_in,  true),
@@ -76,7 +73,7 @@ h(trout) -> bool;
 h(_Arg)  -> false.
 
 p(fin)   -> [is_integer, {gt, 500}, {lt, 1500}];
-p(trout) -> [is_nat, {gt, 1065}, {lt, 1067}];
+p(trout) -> [is_integer, {gt, 1065}, {lt, 1067}];
 p(_Arg)   -> 1066.
 
 % ---------------------  
@@ -93,7 +90,6 @@ execute_guard([H|Chain], Arg, Output) ->
 
 execute_a_guard({gt, Num}, Arg) -> Arg > Num;
 execute_a_guard({lt, Num}, Arg) -> Arg < Num;
-execute_a_guard(is_nat, Arg)    -> is_integer(Arg) and (Arg > -1);
 
 % default case, is_int, if_float    etc.  
 
@@ -103,8 +99,8 @@ execute_a_guard(Function, Arg) ->
                    is_integer, is_list,      is_map,        is_number,  
                    is_pid,            
                    is_port,    is_reference, is_tuple ],
-    Is_Simple = lists:member(Function, Simple_types),  
-    io:fwrite(" ~w is simple: ~w ~n ", [ Function,  Is_Simple] ),               
+    Trace = lists:member(Function, Simple_types),  
+    io:fwrite(" ~w ~n ", [ Trace ] ),               
     apply(erlang, Function, [ Arg ]).
   
 % ---------------------  
