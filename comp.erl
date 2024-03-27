@@ -7,11 +7,14 @@
 %     1) reflects input and output types of functions
 %     2) generates simple category diagram for f, g and h 
 %        {nat => nat}
+%
 %        Data.Maybe.mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 %        
 
 start() -> 
-        Chain = [[a,f,b], [b,g,c], [c,h,d]],
+        % chain of functions, f, g and h.
+
+        Chain = [[a,f,b], [b,g,c], [c,h,d], [d,p,e]],
 
 	Type_in    = lookup_type_in(Chain, ""),
 	Type_out   = lookup_type_out(Chain, ""),
@@ -29,20 +32,33 @@ start() ->
 	
 	% fist char gets erased each loop  
         io:fwrite(" ~s ~n ~s ~n ~n ", [Type_in, Type_out]),
-	io:fwrite(" input type ~w of p is ok: ~w ~n ", [Guard_in,   Input_type_is_ok] ),
-        io:fwrite(" output type ~w of p is ok: ~w ~n ", [Guard_out, Output_type_is_ok] ),
+	io:fwrite(" input type ~w of p is ok: ~w ~n ", 
+           [Guard_in,   Input_type_is_ok] ),
+        io:fwrite(" output type ~w of p is ok: ~w ~n ", 
+           [Guard_out, Output_type_is_ok] ),
+        io:fwrite(" ~n "),
 	Output.
 
 lookup_type_in([], Output) -> Output;
-lookup_type_in([Item|T], Output) ->
-	Info = " // input type of " ++ 
-		atom_to_list( hd(tl(Item))) ++ " is " ++ 
-		atom_to_list( apply(comp, hd(tl(Item)), [fin])),
-	New_Output = Output ++ Info, 
-	lookup_type_in(T, New_Output).
 
-lookup_type_out([], Output) -> Output;
-lookup_type_out([Item|T], Output) ->
+lookup_type_in( [Item|T], Output )->
+        Info = " // input type of " ++ 
+               atom_to_list( hd(tl(Item))) ++ " is ",
+        Type_data    = apply( comp, hd(tl(Item)), [fin]),
+        [Type,Extra] = fin_type_pattern(Type_data),
+        NInfo        = Info ++ atom_to_list(Type) ++ " ",
+        NNInfo       = NInfo ++ atom_to_list(Extra),
+	New_Output   = Output ++ NNInfo,
+        lookup_type_in(T, New_Output).
+ 
+
+ fin_type_pattern( [Type, {Rel1,_},{_,_}] ) -> 
+	[Type,Rel1];
+ fin_type_pattern( Type ) ->
+        [Type,none].
+
+ lookup_type_out([], Output) -> Output;
+ lookup_type_out([Item|T], Output) ->
         Info = " // output type of " ++
                 atom_to_list( hd(tl(Item))) ++ " is " ++
                 atom_to_list( apply(comp, hd(tl(Item)), [trout])),
@@ -63,25 +79,28 @@ build_category([Item|List], Output) ->
 	Trim_Output = lists:reverse(tl(lists:reverse(Output))),
 	build_category(List, Trim_Output ++ Build).
 
-f(fin)   -> float;
-f(trout) -> int;
-f(Arg)   -> floor(Arg).
+% - ----------------------
 
-g(fin)   -> int;
-g(trout) -> nat;
-g(Arg)   -> abs(Arg).
+ f(fin)   -> float;        % type in
+ f(trout) -> int;          % type out
+ f(Arg)   -> floor(Arg).   % function 
 
-h(fin)   -> nat;
-h(trout) -> bool;
-h(_Arg)  -> false.
+ g(fin)   -> int;
+ g(trout) -> nat;
+ g(Arg)   -> abs(Arg).
 
-p(fin)   -> [is_integer, {gt, 500}, {lt, 1500}];
-p(trout) -> [is_nat, {gt, 1065}, {lt, 1067}];
-p(_Arg)   -> 1066.
+ h(fin)   -> nat;
+ h(trout) -> nat;
+ h(_Arg)  -> 1000.
+
+%            [is_integer, {gt,1065   }, {lt,1067 }]; 
+ p(fin)   -> [int, {gt, 500}, {lt, 1500}];
+ p(trout) -> nat;
+ p(_Arg)  -> 1066.
 
 % ---------------------  
 
-execute_guard([], _Arg, Output) -> Output;                    % execute_guard/3
+execute_guard([], _Arg, Output) -> Output;     % execute_guard/3
 
 execute_guard([H|Chain], Arg, Output) ->  
   Out = execute_a_guard(H, Arg) and Output, 
@@ -98,13 +117,19 @@ execute_a_guard(is_nat, Arg)    -> is_integer(Arg) and (Arg > -1);
 % default case, is_int, if_float    etc.  
 
 execute_a_guard(Function, Arg) ->
-    Simple_types = [ is_atom,    is_binary,    is_bitstring,  is_boolean, 
-                   is_float,   is_function,       
-                   is_integer, is_list,      is_map,        is_number,  
-                   is_pid,            
-                   is_port,    is_reference, is_tuple ],
+    % simple native types in erlan
+    Simple_types = [ is_atom,    is_binary,    is_bitstring,  
+                     is_boolean, 
+                     is_float,   is_function,       
+                     is_integer, is_list,      is_map,    
+                     is_number,  
+                     is_pid,            
+                     is_port,    is_reference, is_tuple ],
+    
     Is_Simple = lists:member(Function, Simple_types),  
-    io:fwrite(" ~w is simple: ~w ~n ", [ Function,  Is_Simple] ),               
+    io:fwrite(" ~n "),
+    io:fwrite(" ~w is simple: ~w ~n ", [ Function,  Is_Simple] ),  
+                    
     apply(erlang, Function, [ Arg ]).
   
 % ---------------------  
