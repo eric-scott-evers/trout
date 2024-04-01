@@ -98,6 +98,11 @@ build_category([Item|List], Output) ->
  p(trout) -> nat;
  p(_Arg)  -> 1066.
 
+ q(fin)   -> [int, tand, [{gt, 10}, tor, {lt, 5}]];
+ q(trout) -> real;	    
+ q(Arg)   -> Arg*Arg. 			 
+		  
+		  
 % ---------------------  
 
 execute_guard([], _Arg, Output) -> Output;     % execute_guard/3
