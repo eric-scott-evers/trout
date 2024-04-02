@@ -1,22 +1,38 @@
 -module(cat1).
--export([ start/0, max/2, min/2, rule/2, t/0]).
+% -export([ start/0, max/2, min/2, rule/2, t/0]).
+-compile(export_all).
 
 start() -> 
-  
-  ["f(tin)", f(tin), "f(tout)", f(tout), "f(3.5)", f(3.5) ,
-   calc_sub_sets(), " are a list of nested subsets"].  
- 
-f(tin) -> float;
-f(tout) -> int;
+  io:fwrite("subsets and types ~n"),  
+  io:fwrite(" ~s ~w ~n",[" f(dom)     ",            f(tin) ]),   
+  io:fwrite(" ~s ~w ~n",[" f(cod)     ",           f(tout) ]),   
+  io:fwrite(" ~s ~w ~n",[" max(dom)   " ,    cat1:max(dom) ]),   
+  io:fwrite(" ~s ~w ~n",[" max(cod)   ",     cat1:max(cod) ]),   
+  io:fwrite(" ~s ~w ~n",[" f(3.5)     ",            f(3.5) ]),
+  Subsets = calc_sub_sets(),
+  io:fwrite(
+  " is nat a subset of real?  options are nat, int, real , complex~n"),
+  io:fwrite(" subsets of subsets ~w ~n", [ calc_sub_sets() ]),
+  io:fwrite(" if map subset A = ~w ", [calc_sub_sets()] ),
+  io:fwrite(" then is_subset( first(A), last(A)).  "), 
+  io:fwrite(" ~w is subset of ~w ", 
+     [ hd( Subsets), lists:last( Subsets)]), 
+  io:fwrite(" \n "). 
+
+f(tin)   -> float;
+f(tout)  -> int;
 f(Float) -> round(Float).
 
-max(true , _X) -> true;
-max(false, X) -> X.  
+max(dom) -> nat_aug;
+max(cod) -> nat_aug.
 
-min(true, X)  -> X;
-min(false, _X) -> false;
-min(X, true)  -> X;
-min(_X, false) -> false.
+max(true , _X) -> true;
+max(false, X)  -> X.  
+
+min(true, X)    -> X;
+min(false, _X)  -> false;
+min(X,  true)   -> X;
+min(_X, false)  -> false.
 
 rule([X,eq,Y],[Y,eq,Z]) -> [X,eq,Z];
 rule(max, [X,true]) -> X.
