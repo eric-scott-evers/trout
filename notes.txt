@@ -1,0 +1,16 @@
+
+ set_tool:is_subset(nat, real) 
+   [nat,nat,integer,real]
+
+  returns a set of subsets proving A is a subset of D
+  K = [A,B,C,D] 
+  A sub B sub C sub D
+  we could reduce K with is_subset to true
+  
+  goal: have a safe execute chain command
+  exe_chain(argx, [f,g,h])
+  where is_subset( f(cod), g(dom)), etc to show 
+  h o g o f(arg) is a safe composition of functions 
+  before we run them.
+
+  
