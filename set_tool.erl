@@ -10,7 +10,7 @@ start() ->
   io:fwrite(" ~s ~w ~n",[" max(cod)   ", set_tool:max(cod) ]),   
   io:fwrite(" ~s ~w ~n",[" f(3.5)     ",            f(3.5) ]),
   % Subsets = calc_sub_sets(),
-  Subsets = is_subset( nat, real),
+  Subsets = prove_is_subset( nat, real),
   io:fwrite(
   " is nat a subset of real?  options are nat, int, real , complex~n"),
   io:fwrite(" subsets of subsets ~w ~n", [ calc_sub_sets() ]),
@@ -58,6 +58,7 @@ sub( integer, real    )  -> true;
 sub( nat,     integer )  -> true;
 sub( nat,     rat     )  -> true;
 sub( real,    complex )  -> true;
+sub( rat,     real    )  -> true;
 sub(X, X) -> true;
 sub(X, Y) -> false.
 
@@ -65,6 +66,9 @@ sub(X, Y) -> false.
 %  pick the first solution is head. 
 
 is_subset(Small, Big) -> 
+  prove_is_subset(Small, Big).
+
+prove_is_subset(Small, Big) -> 
   hd( 
     [[X,Y,W,Z] || 
         X <- [Small], 
@@ -79,10 +83,15 @@ calc_sub_sets() ->
       ((A==nat) and (B==integer)) or 
        (A==B) or 
        ((A==integer) and (B==real)) end,
-  hd( 
+  
+  Solutions = 
     [[X,Y,W,Z] || X<-[nat], Y<-cat1:t(), W<-cat1:t(), 
-      Z<-[real], Sub(X,Y), Sub(Y,W), Sub(W,Z)]).
+      Z<-[real], Sub(X,Y), Sub(Y,W), Sub(W,Z)],
+  if 
+     length(Solutions) < 1 -> [[]];
+     true -> hd(Solutions)
+  end.
 
 % list of available sets 
 
- t() -> [nat, integer, real, complex]. 
+ t() -> [nat, integer, real, rat, complex]. 

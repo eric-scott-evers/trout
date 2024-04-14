@@ -13,4 +13,78 @@
   h o g o f(arg) is a safe composition of functions 
   before we run them.
 
+  inside out functions in refective
+
+  We can create a functions dom and cod that look
+  familier.
+
+  dom(F) ->
+    apply(?MODULE, F, dom).
+
+  chain type: [ is_list ]                 is general
+              [ is_list, of, is_real]
+
+  using an apl like syntax:)
   
+  predefined: Of = "of" 
+
+  given L = [H|T]  
+
+  is_list(L)
+    and  
+  mapfoldl( 
+    fun(L, Acc) -> Acc and is_real(hd(L)), tl(L), true, L)
+ 
+  mapfoldl( F, Acc0, [Hd|Tail]) -> 
+     {  R, Acc1} = F(Hd, Acc0), 
+     { Rs, Acc2} = mapfoldl( F, Acc1, Tail), 
+     { [R|Rs], Acc2 };
+ 
+  lists:mapfoldl(
+    fun(X, Sum) -> [2*x, X+Sum] end,
+    0,
+    [1,2,3,4,5]).
+
+  F = fun([H|T]) ->
+    is_float(H). 
+
+  We can separate the struture of a datatype from the
+  type of the leaves. Type_Struct = H1
+  but H1 CAN have leaves of type integer or atom. 
+  TLeaf1 = fun(A) -> is_integer(A) end.
+  TLeaf2 = fun(A) -> is_atom(A) end. 
+  
+  10> H1([3,4], TLeaf).
+  true
+  11> H1([a,5], TLeaf). 
+  true
+
+note: we only chech the type of leaf ofhead(Arg1) 
+
+H1 = fun([A|B], Leaf) -> apply(Leaf,[A]) ;
+8>       (C, Leaf) -> false end .
+#Fun<erl_eval.43.65746770>
+9> TLeaf = fun(L) -> is_integer(L) end .
+#Fun<erl_eval.44.65746770>
+10> H1([4,7], TLeaf).
+true
+11> H1([a,7], TLeaf).
+false
+12> H1([a,7], is_atom).
+** exception error: bad function is_atom
+13> H1([a,7], :is_atom).
+* 1:11: syntax error before: ':'
+13> H1([a,7], {is_atom}).
+** exception error: bad function {is_atom}
+14> H1([a,7], TLeaf2=fun(A)-> is_atom(A) end  ).
+true
+15> H1([5,7], TLeaf2=fun(A)-> is_atom(A) end  ).
+false
+
+  We can make a TLeaf_t permissive, TLeaf_t accepts any type,
+  feed TLeaf_t to H1, then H1(Arg, TLeaf_t)  will accept the 
+  pure structure ignoring the leaf type.
+
+  We could make the structure checker H more strict 
+  and make H check more or all the leaves.
+
