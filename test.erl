@@ -104,6 +104,8 @@ list_p_1() -> fun(TLeaf) ->
               end
             end. 
 
+% one argument tuple_p 
+
 tuple_p() -> fun(TLeaf) -> 
                fun(A) -> 
                  is_tuple(A) and apply(TLeaf, [element(1,A), 0] )
@@ -119,81 +121,121 @@ integer_p() -> fun(A,_) ->
 
 -spec compose(fun((A) -> B), fun((B) -> C)) -> fun((A) -> C).
 
+
 compose(F, G) -> fun(X) -> G(F(X)) end. 
+
+% In start2 we define various type check functions
+%   L_1 accepts a list
+%   L_2 accepts a list of integers
+
 
 start2() ->
   H = list(),
   H([3,4], true_2()),      
   H([3,4], integer_p()),
-                                %  list_P/0
-    L_1  = list_p(),            %  L_1/1 Arg = TLeaf or structure
-    L_2  = L_1(integer_p()),    %  L_2/1 Arg = Structure or TLeaf
-    L_3  = L_2([3,4]),
-                                %
-    L_10 = list_p(),
-    L_11 = L_10(test:true_2()),
-    L_12 = L_11([a,b]),
 
-    L_20 = tuple_p(),
-    L_21 = L_20(test:true_2()),
-    L_22 = L_21({a,b}),
+    %  list_P/0
 
-    T_30  = tuple_p(),             % tuple_p/0 
-    T_31  = T_30(test:true_2()),   % T_30/1 Arg=TLeaf/2
-                                   % T_32/1 Arg={a,b}
-    L_40  = list_p_1(),            
-    L_41  = L_40( T_31 ),        
-    L_42  = L_41([{3,4},{4,5}]),
+    S_1  = list_p(),            %  S_1  is Structure type
+    L_1  = integer_p(),         %  L_1  is Leaf type
+    T_1  = S_1(L_1),            %  T_1  is Type w/ structure and leaf
 
-    L_50  = list_p_1(),                       
-    L_51  = L_50( test:true_1()),
-    L_52  = L_51( [a,7]),
+    D_1  = [3,4],               %  D_1  is sone data 
+    TC_1 = T_1(D_1),            %  TC_1 is type check data 
 
-    L_60  = list_p_1(),
-    L_61  = L_60( test:true_1()),
+    % ----------
 
-    L_64  = test:true_1(),
-    L_65  = compose( L_60, L_60),
-    L_66  = compose( L_65, L_60),
-    L_67  = compose( L_66, L_64),
+    S_2  = list_p(),            %    is Structure type
+    L_2  = test:true_2(),       %    is Leaf type
+    T_2  = S_2(L_2),            %    is Type w/ structure and leaf
+
+    D_2  = [3,4],               %    is sone data 
+    TC_2 = T_2(D_2),            %    is type check of data 
+
+    % ----------
+    S_3  = tuple_p(),           %    is Structure type
+    L_3  = test:true_2(),       %    is Leaf type
+    T_3  = S_3(L_3),            %    is Type w/ structure and leaf
+
+    D_3  = {3,4},               %    is sone data 
+    TC_3 = T_3(D_3),            %    is type check of data 
+
+    % ----------
+
+    Tuple_of     = tuple_p(),             % tuple_p/0 
+    Any          = test:true_2(),         % 
+    List_of      = list_p_1(),            % list_p_1/1
+            
+    Type_4       = List_of( Tuple_of( Any )),        
+    Data_4       = [{3,4},{4,5}],         % data 
+    TC_4         = Type_4( Data_4),       % type check
+
+    % ----------
+ 
+    Any_1        = test:true_1(),               % true/1
+            
+    Type_5       = List_of( Any_1 ),           
+    Data_5       = [a,7],                       % data 
+    TC_5         = Type_5( Data_5 ),            % type check
+
+    % ----------
+
+    Chain_6 = [ List_of, List_of, List_of, Any_1 ],
+    Chain_Type_6 = reduce( compose, Chain_6),
+
     Data  = [[[a,5],[b,4]]],
-    L_68  = L_67( Data ), 
-    
-    L_70  = list_p_1(),
-    L_71  = L_70( L_61),
-    L_72  = L_71( [[5,7],[8,4]] ),
+    TC_6  = Chain_Type_6( Data ), 
+
+    Chain_type_7       = build_tree_of_depth( 6 ),
+    Chain_build_type_7 = reduce( compose, Chain_type_7),
+
+    D_7 = [[[[[[ok, cat]]]]]],
+    TC_7   = Chain_build_type_7( D_7 ),
+
+io:fwrite(" ~w is a dynamic tree of depth 6 type : ~w ~n ", [ D_7, TC_7]),
+
+io:fwrite(" ~w is list of int: ~w ~n ",    [ D_1, TC_1]),  
+io:fwrite(" ~w is list of any: ~w ~n ",    [ D_2, TC_2]),  
+io:fwrite(" ~w is tuple of any: ~w ~n ",   [ D_3, TC_3]),
+  
+io:fwrite(" List_of( Tuple_of( Any )) ~n " ),  
+io:fwrite(" ~w is list of tuple of any: ~w ~n ", [ Data_4, TC_4]),  
+
+io:fwrite(" List_of(  Any_1 )) ~n " ),  
+io:fwrite(" ~w is list of any: ~w ~n ", [ Data_5, TC_5]),  
+
   [
-    " list of int ", L_3, 
-    " list of any ", L_12,
-    " tuple of any ", L_22,
-    " ~n list of tuple of any ", L_42,
-    " ~n simpler list of any ", L_52,
-    " compose list of list of list of any ", L_68,
-    " where data is ", Data, 
-    " ~n list of list of any ", L_72
+    " compose chain of types: list of list of list of any ", TC_6
   ]. 
 
-% H = fun(A, Leaf) -> 
-%         apply( List(A, Sequence, Leaf );
-%         (C, Leaf) -> false end.
+% Build a structure dynamically
+%  
 
-% H1 = fun([A|B], Leaf) -> apply(Leaf,[A]) ;
-% 8>       (C, Leaf) -> false end .
-% #Fun<erl_eval.43.65746770>
-% 9> TLeaf = fun(L) -> is_integer(L) end .
-% #Fun<erl_eval.44.65746770>
-% 10> H1([4,7], TLeaf).
-% true
-% 11> H1([a,7], TLeaf).
-% false
-% 12> H1([a,7], is_atom).
-% ** exception error: bad function is_atom
-% 13> H1([a,7], :is_atom).
-% * 1:11: syntax error before: ':'
-% 13> H1([a,7], {is_atom}).
-% ** exception error: bad function {is_atom}
-% 14> H1([a,7], TLeaf2=fun(A)-> is_atom(A) end  ).
-% true
-% 15> H1([5,7], TLeaf2=fun(A)-> is_atom(A) end  ).
-% false
+  build_tree_of_depth( N ) -> 
+      build_tree_of_depth( N, []).
+
+  build_tree_of_depth( 0, Chain) -> 
+      Any_1        = test:true_1(),               
+      Chain ++ [ Any_1 ];
+
+  build_tree_of_depth( N, Chain) -> 
+      List_of = list_p_1(),
+      build_tree_of_depth( N-1, [ List_of ] ++ Chain).
+
+reduce( Func, [H|T] ) -> 
+  reduce( Func, T, H).
+  
+reduce( _Func, [], Acc) -> Acc;
+reduce( Func, [H|T], Acc) ->
+  NAcc = apply( test, Func, [ Acc, H ]),
+  reduce( Func, T, NAcc).
+
+%  So we can have christmas tree, a tree with structure
+%    undecorated christmas tree with 
+%    no specified leaves. A shallow tree with required depth = 1
+%
+%    Any_1     = true_1().
+%    Xmas_tree = list_of( Any_1 ). 
+% 
+%    leaves can be anything.
 
