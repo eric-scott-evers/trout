@@ -23,13 +23,39 @@ test() ->
   Union     = union( A,  B), 
   Intersect = intersect( A, B), 
   Add_union = add_union( A, B),
-  [a,A,b,B, plump, [Pa, Pb], 
+  Dom_1     = dom( add_union, 2),
+%  Dom_2     = dom( intersect, 2),
+   Type_info_1 = type_info( mset, 0),
+   Type_info_2 = type_info( pair, 0),
+  % ----- Output 
+  
+  [ a,A,b,B,   plump, [Pa, Pb], 
     union,     Union,
     intersect, Intersect,
-    add_union, Add_union].
+    add_union, Add_union,
+    dom, add_union, Dom_1,
+    type_info, mset, Type_info_1,
+    type_info, pair, Type_info_2
+%    dom, add_union, Dom_2 
+].
 
-% ---------- addative_union
+% ---------- addative_union ----------
 
+% domain of fuction, F, with arity, N
+
+dom( F , N ) -> 
+  % M = list_to_atom(F),
+  apply(?MODULE, F, [dom, N]).
+
+% type info of type, T, of arity N
+type_info( mset, 0) -> [pair];
+type_info( pair, 0) -> {any, int}.
+
+-type pair() :: {any(), integer()}.
+% x-type mset() :: [pair()].
+-spec add_union( [pair()], [pair()] ) -> pair().
+
+add_union( dom, 2 ) -> [ mset, mset ]; 
 add_union( A, B ) -> 
   [Pa, Pb] = plump_both( A, B),
   m_add_union( Pa, Pb, []).
@@ -50,6 +76,7 @@ add_union_choose_value( Val_A, Val_B, Key ) ->
   
 % ---------- multi set intersection  
 
+% intersect( dom, 2) -> [ mset, mset ];
 intersect( A, B ) -> 
   [Pa, Pb] = plump_both( A, B),
   m_intersect( Pa, Pb, []).

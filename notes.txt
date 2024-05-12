@@ -1,4 +1,20 @@
 
+Documentaion for programs
+
+----------
+
+mset is multiset 
+  with finite pos and neg integer multiplicity
+  created functions defined by Blizard 
+
+ mset:union (A,B)      multiset union 
+                         using each max non zero mult(x)      
+ mset:intersect (A,B)  multiset intersection, 
+                         using min nonzero pair of mult(x)
+ mset:add_union (A,B)  multiset addative union
+                         sum of mult(x) 
+---------- 
+
  set_tool:is_subset(nat, real) 
    [nat,nat,integer,real]
 
